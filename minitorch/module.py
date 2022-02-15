@@ -1,3 +1,6 @@
+from pytest import param
+
+
 class Module:
     """
     Modules form a tree that store parameters and other
@@ -21,25 +24,38 @@ class Module:
 
     def train(self):
         "Set the mode of this module and all descendent modules to `train`."
-        raise NotImplementedError('Need to include this file from past assignment.')
+        self.training = True
+        for module in self.modules():
+            module.train()
 
     def eval(self):
         "Set the mode of this module and all descendent modules to `eval`."
-        raise NotImplementedError('Need to include this file from past assignment.')
+        self.training = False
+        for module in self.modules():
+            module.eval()
 
     def named_parameters(self):
         """
         Collect all the parameters of this module and its descendents.
-
-
         Returns:
             list of pairs: Contains the name and :class:`Parameter` of each ancestor parameter.
         """
-        raise NotImplementedError('Need to include this file from past assignment.')
+        def getParamPath(submodule_name, param_name):
+            return f'{submodule_name}.{param_name}'
+
+        params = list(self.__dict__["_parameters"].items())
+        for submodule_name, submodule in self.__dict__["_modules"].items():
+            params.extend(
+                [(getParamPath(submodule_name, name), param_value) 
+                    for (name, param_value) in submodule.named_parameters()]
+            )
+        
+        return params
+
 
     def parameters(self):
         "Enumerate over all the parameters of this module and its descendents."
-        raise NotImplementedError('Need to include this file from past assignment.')
+        return dict(self.named_parameters()).values()
 
     def add_parameter(self, k, v):
         """
