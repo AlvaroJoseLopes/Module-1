@@ -68,7 +68,7 @@ def neg(x):
         -x
         type : float
     """
-    return -x
+    return -1.0 * x
 
 def lt(x, y):
     """
@@ -144,7 +144,7 @@ def relu(x):
     Returns:
         float : relu value
     """
-    return max(x,0)
+    return max(x,0.0)
 
 EPS = 1e-6
 
