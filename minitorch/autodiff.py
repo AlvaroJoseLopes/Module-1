@@ -271,10 +271,11 @@ class FunctionBase:
             (see `is_constant` to remove unneeded variables)
 
         """
-        # Tip: Note when implementing this function that
-        # cls.backward may return either a value or a tuple.
-        # TODO: Implement for Task 1.3.
-        raise NotImplementedError('Need to implement for Task 1.3')
+        back = wrap_tuple(cls.backward(ctx, d_output))
+        return [(input, back[index]) for index, input in enumerate(inputs) if not is_constant(input)]
+
+
+
 
 
 # Algorithms for backpropagation
